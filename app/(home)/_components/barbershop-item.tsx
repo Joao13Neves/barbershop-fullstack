@@ -7,7 +7,9 @@ interface BarbershopItemProps {
 const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
   return (
     <Card>
-      <CardContent className="p-0"></CardContent>
+      <CardContent className="p-0">
+        <h1>{barbershop.name}</h1>
+      </CardContent>
     </Card>
   );
 };
