@@ -1,15 +1,21 @@
+"use client";
+
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Barbershop } from "@prisma/client";
 import Image from "next/image";
 import { Button } from "@/app/_components/ui/button";
 import { Badge } from "@/app/_components/ui/badge";
 import { StarIcon } from "lucide-react";
-import { Span } from "next/dist/trace";
+import { useRouter } from "next/navigation";
 
 interface BarbershopItemProps {
   barbershop: Barbershop;
 }
 const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
+  const router = useRouter();
+  const handleBookingClick = () => {
+    router.push(`/barbershops/${barbershop.id}`);
+  };
   return (
     <Card className="min-w-[167px] max-w-[167px] rounded-2xl">
       <CardContent className="px-1 py-0">
@@ -17,11 +23,12 @@ const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
           <div className="absolute top-2 left-2 z-50">
             <Badge
               variant="secondary"
-              className="opacity-90 flex gap-1 items-center top-3 left-3">
+              className="opacity-90 flex gap-1 items-center top-3 left-3"
+            >
               <StarIcon
                 size={16}
-                className="fill-primary text-secondary">
-              </StarIcon>
+                className="fill-primary text-secondary"
+              ></StarIcon>
               <span className="text-xs">5,0</span>
             </Badge>
           </div>
@@ -44,7 +51,11 @@ const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
           <p className="text-sm text-gray-400 overflow-hidden text-ellipsis text-nowrap">
             {barbershop.address}
           </p>
-          <Button className="w-full mt-4" variant="secondary">
+          <Button
+            className="w-full mt-4"
+            variant="secondary"
+            onClick={handleBookingClick}
+          >
             Agendar
           </Button>
         </div>
