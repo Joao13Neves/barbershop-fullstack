@@ -1,13 +1,5 @@
-import { Button } from "@/app/_components/ui/button";
 import { db } from "@/app/_lib/prisma";
-import {
-  ChevronLeftIcon,
-  MapPin,
-  MapPinIcon,
-  MenuIcon,
-  StarIcon,
-} from "lucide-react";
-import Image from "next/image";
+import BarbershopInfo from "./_components/barbershop-info";
 
 interface BarbershopDetailsPageProps {
   params: {
@@ -34,7 +26,9 @@ const BarbershopDetailsPage = async ({
     return null;
   }
 
-  return ();
+  return ( 
+    <BarbershopInfo barbershop={barbershop} />
+   );
 };
 
 export default BarbershopDetailsPage;
