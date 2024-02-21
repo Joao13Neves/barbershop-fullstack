@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Service } from "@prisma/client";
 import Image from "next/image";
@@ -12,7 +14,13 @@ const ServiceItem = ({ service }: ServiceItemProps) => {
       <CardContent>
         <div className="flex">
           <div className="relative h-[110px] w-[110px]">
-            <Image src={service.imageUrl} fill style={{ objectFit: "cover" }} alt={service.name}></Image>
+            <Image
+              className="rounded-lg"
+              src={service.imageUrl}
+              fill
+              style={{ objectFit: "contain" }}
+              alt={service.name}
+            ></Image>
           </div>
         </div>
       </CardContent>
