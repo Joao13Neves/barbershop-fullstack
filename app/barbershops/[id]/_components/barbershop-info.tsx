@@ -7,24 +7,24 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface BarbershopInfoProps {
-    barbershop: Barbershop
+  barbershop: Barbershop;
 }
-const BarbershopInfo = ({barbershop}: BarbershopInfoProps) => {
+const BarbershopInfo = ({ barbershop }: BarbershopInfoProps) => {
   const router = useRouter();
 
   const handleBackClick = () => {
     router.back();
   };
-  
+
   return (
     <div>
       <div className="w-full h-[200px] relative">
-        <Button onClick={handleBackClick}
+        <Button
           size={"icon"}
           variant={"outline"}
           className="z-50 absolute top-4 left-4"
         >
-          <ChevronLeftIcon />
+          <ChevronLeftIcon onClick={handleBackClick}/>
         </Button>
         <Button
           size={"icon"}
