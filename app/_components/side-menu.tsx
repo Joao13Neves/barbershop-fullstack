@@ -36,7 +36,7 @@ const SideMenu = () => {
           </div>
 
           <Button variant="secondary" size="icon">
-            <LogOutIcon onClick={handleLogOutClick}></LogOutIcon>
+            <LogOutIcon size={16} onClick={handleLogOutClick}></LogOutIcon>
           </Button>
         </div>
       ) : (
