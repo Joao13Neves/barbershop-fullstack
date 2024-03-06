@@ -50,10 +50,12 @@ const SideMenu = () => {
             variant="secondary"
             className="w-full justify-start"
           >
+            
             <LogInIcon className="mr-2" size={18}></LogInIcon>
             Fazer Login
           </Button>
         </div>
+      // TODO: usar credentials provider para autenticar
       )}
 
       <div className="flex flex-col gap-3 px-5">
