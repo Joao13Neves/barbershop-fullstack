@@ -5,18 +5,20 @@ import { Card, CardContent } from "@/app/_components/ui/card";
 import {
   Sheet,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/app/_components/ui/sheet";
 import { Barbershop, Service } from "@prisma/client";
 import { Calendar } from "@/app/_components/ui/calendar";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { ptBR } from "date-fns/locale";
 import { generateDayTimelist } from "../_helpers/hours";
-import { format } from "date-fns";
+import { format, setHours, setMinutes } from "date-fns";
+import { saveBooking } from "../_actions/save-booking";
 
 interface ServiceItemProps {
   barbershop: Barbershop;
@@ -29,8 +31,9 @@ const ServiceItem = ({
   barbershop,
   isAuthenticated,
 }: ServiceItemProps) => {
+  const {data} = useSession();
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const [hour, setHour] = useState<string | undefined>();
+  const [hour, setHour] = useState<string | undefined>(undefined);
 
   const handleDateClcick = (date: Date | undefined) => {
     setDate(date);
@@ -45,7 +48,28 @@ const ServiceItem = ({
     if (!isAuthenticated) {
       return signIn("google");
     }
-    // TODO: abrir modal de agendamento
+  };
+
+  const handdleBookingSubmit = async () => {
+    try {
+      if (!hour || !date || !data?.user) {
+        return;
+      }
+      
+      const dateHour = Number(hour.split(':')[0]);
+      const dateMinutes = Number(hour.split(':')[1]);
+
+      const newDate = setMinutes (setHours(date, dateHour), dateMinutes);
+
+      await saveBooking({
+        serviceId: service.id,
+        barbershopId: barbershop.id,
+        date: newDate,
+        userId: ''
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const timeList = useMemo(() => {
@@ -124,7 +148,7 @@ const ServiceItem = ({
 
                   {/* mostrar lista de horários se alguma data estiver selecionada*/}
                   {date && (
-                    <div className="flex gap-3 overflow-x-auto py-6 p-5 border-y border-solid border-secondary [&::-webkit-scrollbar]:hidden">
+                    <div className="flex gap-3 overflow-x-auto py-6 p-5 border-t border-solid border-secondary [&::-webkit-scrollbar]:hidden">
                       {timeList.map((time) => (
                         <Button
                           onClick={() => handleHourClick(time)}
@@ -175,6 +199,12 @@ const ServiceItem = ({
                         </div>
                       </CardContent>
                     </Card>
+
+                    <SheetFooter className="pt-5">
+                      <Button disabled={!hour || !date}>
+                        Confirmar reserva
+                      </Button>
+                    </SheetFooter>
                   </div>
                 </SheetContent>
               </Sheet>
